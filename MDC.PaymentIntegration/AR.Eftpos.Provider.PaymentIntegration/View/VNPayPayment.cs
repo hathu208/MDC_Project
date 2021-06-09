@@ -16,7 +16,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
     {
         private bool isSubscribing = false;
 
-        private  VNPayIPNSubscriber subscriber;
+        public  VNPayIPNSubscriber Subscriber;
 
         private string transactionType;
 
@@ -70,18 +70,9 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         {
             InitializeComponent();
             transactionType = "Purchase";
-            eftPosTransactionId = "1111111114";
+            eftPosTransactionId = "1111111115";
             eftPosOrderId = "Ord1111111111";
             amount = 1000;
-        }
-
-        private void btnQRPay_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
         }
 
         private void VNPayPayment_Load(object sender, EventArgs e)
@@ -109,12 +100,10 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            var message = subscriber.ipnMessage;
+            var message = Subscriber.ipnMessage;
             if (!string.IsNullOrEmpty(message))
             {
                 txtResponse.Text = message;
-
-
                 isSubscribing = false;
                 progressBar1.Visible = false;
                 this.LoadingForm(false);
@@ -127,22 +116,32 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             this.txtResponse.Enabled = !isLoading;
             this.txtTransRef.Enabled = !isLoading;
             this.btnQRPay.Enabled = !isLoading;
-            this.btnSPOS.Enabled = !isLoading;
             this.button1.Enabled = !isLoading;
         }
 
         private void RunSubscriber()
         {
-            subscriber = new VNPayIPNSubscriber();
-            subscriber.AddSubscriber();
-            isSubscribing = true;
-
-            progressBar1.Visible = true;
-            this.LoadingForm(true);
-            timer1.Start();
-            while (!isSubscribing)
+            try
             {
-                timer1.Stop();
+                Subscriber = new VNPayIPNSubscriber();
+                Subscriber.VnPayTransRef = this.vnPayTransRef;
+                Subscriber.EftPosTransactionId = this.eftPosTransactionId;
+
+                Subscriber.AddSubscriber();
+
+                isSubscribing = true;
+                progressBar1.Visible = true;
+                this.LoadingForm(true);
+
+                timer1.Start();
+                while (!isSubscribing)
+                {
+                    timer1.Stop();
+                }
+            }
+            catch(Exception e)
+            {
+                this.txtResponse.Text = e.Message;
             }
         }
        

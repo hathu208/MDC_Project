@@ -36,7 +36,6 @@
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtTransactionId = new System.Windows.Forms.TextBox();
-            this.btnSPOS = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.lblHeader = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -78,7 +77,6 @@
             this.btnQRPay.TabIndex = 4;
             this.btnQRPay.Text = "&OK";
             this.btnQRPay.UseVisualStyleBackColor = true;
-            this.btnQRPay.Click += new System.EventHandler(this.btnQRPay_Click);
             // 
             // txtAmount
             // 
@@ -104,16 +102,6 @@
             this.txtTransactionId.Size = new System.Drawing.Size(146, 22);
             this.txtTransactionId.TabIndex = 7;
             this.txtTransactionId.Text = "1111111111";
-            // 
-            // btnSPOS
-            // 
-            this.btnSPOS.Location = new System.Drawing.Point(331, 212);
-            this.btnSPOS.Name = "btnSPOS";
-            this.btnSPOS.Size = new System.Drawing.Size(138, 28);
-            this.btnSPOS.TabIndex = 9;
-            this.btnSPOS.Text = "OK";
-            this.btnSPOS.UseVisualStyleBackColor = true;
-            this.btnSPOS.Click += new System.EventHandler(this.button1_Click);
             // 
             // label3
             // 
@@ -166,25 +154,24 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(475, 212);
+            this.button1.Location = new System.Drawing.Point(373, 212);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(138, 28);
             this.button1.TabIndex = 13;
             this.button1.Text = "Recall";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.UseWaitCursor = true;
             // 
             // VNPayPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.LemonChiffon;
+            this.ClientSize = new System.Drawing.Size(725, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtTransRef);
             this.Controls.Add(this.lblHeader);
-            this.Controls.Add(this.btnSPOS);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtTransactionId);
             this.Controls.Add(this.label3);
@@ -210,7 +197,6 @@
         private System.Windows.Forms.TextBox txtAmount;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtTransactionId;
-        private System.Windows.Forms.Button btnSPOS;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.Label label5;

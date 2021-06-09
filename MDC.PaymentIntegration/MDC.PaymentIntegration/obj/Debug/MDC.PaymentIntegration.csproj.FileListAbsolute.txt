@@ -1,0 +1,10 @@
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\bin\Debug\MDC.PaymentIntegration.PaymentIntegration.dll
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\bin\Debug\MDC.PaymentIntegration.PaymentIntegration.pdb
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\bin\Debug\Newtonsoft.Json.Net20.dll
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.csprojAssemblyReference.cache
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.PaymentIntegration.Properties.Resources.resources
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.csproj.GenerateResource.cache
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.csproj.CoreCompileInputs.cache
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.csproj.CopyComplete
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.PaymentIntegration.dll
+C:\TH\Medicare\MDC_Project\MDC.PaymentIntegration\MDC.PaymentIntegration\obj\Debug\MDC.PaymentIntegration.PaymentIntegration.pdb
