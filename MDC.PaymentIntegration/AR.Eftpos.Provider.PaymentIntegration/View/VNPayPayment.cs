@@ -69,10 +69,10 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         public VNPayPayment()
         {
             InitializeComponent();
-            transactionType = "Purchase";
+            /*transactionType = "Purchase";
             eftPosTransactionId = "1111111115";
             eftPosOrderId = "Ord1111111111";
-            amount = 1000;
+            amount = 1000;*/
         }
 
         private void VNPayPayment_Load(object sender, EventArgs e)
