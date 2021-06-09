@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="MDC.PaymentIntegration.VNPayIPNService.VNPayIPNService" CodeBehind="MDC.PaymentIntegration.VNPayIPNService.VNPayIPNService.cs"%>
