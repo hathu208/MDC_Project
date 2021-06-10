@@ -84,7 +84,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             IPayment qrPay = new Payment();
             bool result = qrPay.genQR(eftPosTransactionId, eftPosOrderId, eftPosOrderId, string.Format("{0} {1}", transactionType, eftPosTransactionId), amount, Common.VNPayMethodCode.QRCODE);
             txtRequest.Text = (qrPay as Payment).stringRequest;
-            if(result)
+            if (result)
             {
                 this.vnPayTransRef = qrPay.APIResponse.psTransactionCode;
                 txtTransRef.Text = this.vnPayTransRef;
@@ -95,7 +95,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             {
                 txtResponse.Text = string.Format("{0} - {1}", qrPay.APIResponse.errors.code, qrPay.APIResponse.errors.message);
             }
-            
+            //this.RunSubscriber();
         }
 
         private void timer1_Tick(object sender, EventArgs e)

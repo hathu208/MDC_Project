@@ -47,22 +47,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         public override TransactionResponseType EftposTransaction(TransactionRequestType request)
         {
             var result = TransactionResultType.Unknown;
-            var description = "UNKNOWN";
-
-            var cardNumber = string.Empty;
-            var accountType = EftposAccountType.Unknown.DataValueInt16();
-            // var cardType = EftposCardType.Unknown.DataValueInt16();
-            var cardTypeRaw = string.Empty;
-            var eftposTransactionReference = string.Empty;
-            var settlementDate = DateTime.Now;
-            var discount = (decimal)0;
-            var includeAttribs = true;
-            var responseAmountOverride = false;
-
-            decimal amount = 0;
-            decimal cashBack = 0;
-
             TransactionResponseType response = new TransactionResponseType(); 
+
             try
             {
                 if (request.TransactionType == EftposTransactionType.Purchase.DataValueInt16())
