@@ -47,58 +47,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         public override TransactionResponseType EftposTransaction(TransactionRequestType request)
         {
             var result = TransactionResultType.Unknown;
-            var description = "UNKNOWN";
-
-            var cardNumber = string.Empty;
-            var accountType = EftposAccountType.Unknown.DataValueInt16();
-            // var cardType = EftposCardType.Unknown.DataValueInt16();
-            var cardTypeRaw = string.Empty;
-            var eftposTransactionReference = string.Empty;
-            var settlementDate = DateTime.Now;
-            var discount = (decimal)0;
-            var includeAttribs = true;
-            var responseAmountOverride = false;
-
-            decimal amount = 0;
-            decimal cashBack = 0;
-
             TransactionResponseType response = new TransactionResponseType(); 
-
-            /*var sb = new StringBuilder();
-            sb.AppendLine("EFTPOS Transaction");
-            sb.AppendLine(string.Format("\tRequestMessageID: {0}", request.RequestMessageID));
-            sb.AppendLine(string.Format("\tTransactionReference: {0}", request.TransactionReference));
-            // Transaction Request properties
-            if (request.TransactionType == EftposTransactionType.Purchase.DataValueInt16())
-            {
-                sb.AppendLine("Transaction Type: PURCHASE");
-                sb.AppendLine(string.Format("\tAmount: {0}", request.Amount));
-                if (request.CashBackSpecified)
-                {
-                    sb.AppendLine(string.Format("\tCashBack: {0}", request.CashBack));
-                }
-            }
-            else if (request.TransactionType == EftposTransactionType.Refund.DataValueInt16())
-            {
-                sb.AppendLine("Transaction Type: REFUND");
-                sb.AppendLine(string.Format("\tAmount: {0}", request.Amount));
-            }
-            else
-            {
-                sb.AppendLine("Transaction Type: NON-SALE");
-
-                // Non sale - customer cash out transaction only
-                if (request.CashBackSpecified)
-                {
-                    sb.AppendLine(string.Format("\tCashBack: {0}", request.CashBack));
-                }
-            }
-
-            if (request.AllowCreditCardsSpecified)
-            {
-                // restrict the use of credit cards if the provider supports this feature
-                sb.AppendLine(string.Format("\tAllowCreditCards: {0}", request.AllowCreditCards));
-            }*/
 
             try
             {
@@ -120,6 +69,29 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
                         if (dialog.ShowDialog() == DialogResult.OK)
                         {
+                            if (dialog.Subscriber.ipnResponseCode == "200")
+                                result = TransactionResultType.Success;
+                            else
+                                result = TransactionResultType.Failed;
+
+                            response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.Subscriber.ipnMessage);
+                            response.RequestMessageID = this.requestMessageID;
+                            response.CardTypeRaw = dialog.Subscriber.ipnCardType;
+                            response.EftposTransactionReference = dialog.VNPayTransRef;
+                            response.Amount = request.Amount;
+                            response.Attributes = new List<AttributeType>()
+                            {
+                                new AttributeType()
+                                {
+                                    Name = "BankCode",
+                                    Value = dialog.Subscriber.ipnBankCode
+                                },
+                                new AttributeType()
+                                {
+                                    Name = "VNPayResponseCode",
+                                    Value = dialog.Subscriber.ipnResponseCode
+                                }
+                            }.ToArray();
                         }
                     }
                 }

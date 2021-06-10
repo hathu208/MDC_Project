@@ -10,9 +10,9 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         private VNPayIPNPublishServiceClient myClient;
         private readonly Thread workerThread;
         private readonly ManualResetEvent stopEvent = new ManualResetEvent(false);
-        //private readonly object locker = new object();
-        //private readonly Queue<string> queue = new Queue<string>();
-
+        //eft trans
+        public string VnPayTransRef;
+        public string EftPosTransactionId;
         //Result from IPN
         public string ipnCardType;
         public string ipnBankCode;
@@ -47,41 +47,45 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
         public void AddSubscriber()
         {
-            // always create an instance context to associate the service with            
-            InstanceContext siteHostContext = new InstanceContext(null, this);
+            try
+            {
+                // always create an instance context to associate the service with            
+                InstanceContext siteHostContext = new InstanceContext(null, this);
 
-            myClient = new VNPayIPNPublishServiceClient(siteHostContext);
+                myClient = new VNPayIPNPublishServiceClient(siteHostContext);
 
-            // create a unique callback address (if you want multiple subscribers to run on the same machine)
-            WSDualHttpBinding binding = (WSDualHttpBinding)myClient.Endpoint.Binding;
-            string uniqueCallbackAddress = binding.ClientBaseAddress.AbsoluteUri;
+                // create a unique callback address (if you want multiple subscribers to run on the same machine)
+                WSDualHttpBinding binding = (WSDualHttpBinding)myClient.Endpoint.Binding;
+                string uniqueCallbackAddress = binding.ClientBaseAddress.AbsoluteUri;
 
-            uniqueCallbackAddress += Guid.NewGuid().ToString();
-            binding.ClientBaseAddress = new Uri(uniqueCallbackAddress);
+                uniqueCallbackAddress += Guid.NewGuid().ToString();
+                binding.ClientBaseAddress = new Uri(uniqueCallbackAddress);
 
-            // Subcribe
-            myClient.Subscribe();
+                // Subcribe
+                myClient.Subscribe();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Subscriber VNPay service đang bị lỗi. Thử 'Recall' để gọi lại kết quả.");
+            }
         }
 
         void IVNPayIPNPublishServiceCallback.SubscribeResultTransChange(IPNRequest request)
         {
             if (request.responseCode == "200")
             {
-                /*if (ipnrequest.psTransactionCode == this.vnPayTransRef && ipnrequest.clientTransactionCode == this.EftPosTransactionId)
+                if (request.psTransactionCode == this.VnPayTransRef && request.clientTransactionCode == this.EftPosTransactionId)
                 {
-                    ipnCardType = ipnrequest.cardType;
-                    ipnBankCode = ipnrequest.bankCode;
-                    ipnPsTransactionCode = ipnrequest.psTransactionCode;
+                    ipnCardType = request.cardType;
+                    ipnBankCode = request.bankCode;
+                    ipnPsTransactionCode = request.psTransactionCode;
+                    ipnResponseCode = request.responseCode;
+                    ipnMessage = request.responseMessage;
                 }
                 else
                 {
                     ipnMessage = "Kết quả trả về không tương thích. Thử 'Recall' để gọi lại kết quả.";
-                }*/
-                ipnCardType = request.cardType;
-                ipnBankCode = request.bankCode;
-                ipnPsTransactionCode = request.psTransactionCode;
-                ipnResponseCode = request.responseCode;
-                ipnMessage = request.responseMessage;
+                }
             }
             else
             {
