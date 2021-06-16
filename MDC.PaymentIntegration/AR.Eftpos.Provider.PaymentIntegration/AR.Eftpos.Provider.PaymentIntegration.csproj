@@ -35,11 +35,17 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AR.Eftpos.Helper">
+    <Reference Include="AR.Eftpos.Helper, Version=2.7002.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\AR.Eftpos.Helper.dll</HintPath>
     </Reference>
-    <Reference Include="AR.Eftpos.Interface">
+    <Reference Include="AR.Eftpos.Interface, Version=2.5007.0.1, Culture=neutral, PublicKeyToken=2d8fc9604246a44b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\AR.Eftpos.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

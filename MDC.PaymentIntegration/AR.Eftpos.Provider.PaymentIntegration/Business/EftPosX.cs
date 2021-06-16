@@ -30,6 +30,15 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { vnpayResponseMessage = value; }
         }
 
+        /// <summary>
+        /// log4net - Logger
+        /// </summary>
+        private log4net.ILog log;
+
+        public EftPosX() : base()
+        {
+            this.log = log4net.LogManager.GetLogger(typeof(EftPosX));
+        }
 
         public override void Dispose()
         {
