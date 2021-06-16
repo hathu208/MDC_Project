@@ -83,5 +83,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MDC.PaymentIntegration\MDC.PaymentIntegration.csproj">
+      <Project>{0bf3ea97-726e-4b53-8b4c-b3aab48e6401}</Project>
+      <Name>MDC.PaymentIntegration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
