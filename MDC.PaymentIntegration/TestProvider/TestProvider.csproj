@@ -75,11 +75,5 @@
     <Folder Include="Service\" />
     <Folder Include="View\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AR.Eftpos.Provider.PaymentIntegration\AR.Eftpos.Provider.PaymentIntegration.csproj">
-      <Project>{151d8d59-bfa6-4768-a377-19925625414a}</Project>
-      <Name>AR.Eftpos.Provider.PaymentIntegration</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -42,7 +42,6 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { eftPosOrderId = value; }
         }
 
-
         private long amount = 0;
 
         public long Amount
@@ -66,6 +65,14 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { vnPayTransRef = value; }
         }
 
+        private string vNPayMethod;
+
+        public string VNPayMethod
+        {
+            get { return vNPayMethod; }
+            set { vNPayMethod = value; }
+        }
+
         public VNPayPayment()
         {
             InitializeComponent();
@@ -82,7 +89,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             txtTransactionId.Text = this.EftPosTransactionId;
             //gen qr
             IPayment qrPay = new Payment();
-            bool result = qrPay.genQR(eftPosTransactionId, eftPosOrderId, eftPosOrderId, string.Format("{0} {1}", transactionType, eftPosTransactionId), amount, Common.VNPayMethodCode.QRCODE);
+
+            bool result = qrPay.genQR(eftPosTransactionId, eftPosOrderId, eftPosOrderId, string.Format("{0} {1}", transactionType, eftPosTransactionId), amount, vNPayMethod);
             txtRequest.Text = (qrPay as Payment).stringRequest;
             if (result)
             {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using static AR.Eftpos.Provider.PaymentIntegration.Common;
 
 namespace AR.Eftpos.Provider.PaymentIntegration
 {
@@ -28,6 +29,14 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         {
             get { return vnpayResponseMessage; }
             set { vnpayResponseMessage = value; }
+        }
+
+        private string vNPayMethod;
+
+        public string VNPayMethod
+        {
+            get { return vNPayMethod; }
+            set { vNPayMethod = value; }
         }
 
 
@@ -59,27 +68,29 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                     //// this.LogEftposResponse();
                     //// --------------------------------------
                     // Simulate EFTPOS Transaction
-                    using (var dialog = new VNPayPayment())
+                    if (vNPayMethod == Common.VNPayMethodCode.QRCODE || vNPayMethod == Common.VNPayMethodCode.SPOSCARD)
                     {
-                        requestMessageID = request.RequestMessageID;
-                        dialog.TransactionType = request.TransactionType.ToString();
-                        dialog.EftPosTransactionId = request.TransactionReference;
-                        dialog.EftPosOrderId = request.OrderId;
-                        dialog.Amount = Convert.ToInt64(request.Amount);
-
-                        if (dialog.ShowDialog() == DialogResult.OK)
+                        using (var dialog = new VNPayPayment())
                         {
-                            if (dialog.Subscriber.ipnResponseCode == "200")
-                                result = TransactionResultType.Success;
-                            else
-                                result = TransactionResultType.Failed;
+                            requestMessageID = request.RequestMessageID;
+                            dialog.TransactionType = request.TransactionType.ToString();
+                            dialog.EftPosTransactionId = request.TransactionReference;
+                            dialog.EftPosOrderId = request.OrderId != null ? request.OrderId : request.TransactionReference;
+                            dialog.Amount = Convert.ToInt64(request.Amount);
 
-                            response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.Subscriber.ipnMessage);
-                            response.RequestMessageID = this.requestMessageID;
-                            response.CardTypeRaw = dialog.Subscriber.ipnCardType;
-                            response.EftposTransactionReference = dialog.VNPayTransRef;
-                            response.Amount = request.Amount;
-                            response.Attributes = new List<AttributeType>()
+                            if (dialog.ShowDialog() == DialogResult.OK)
+                            {
+                                if (dialog.Subscriber.ipnResponseCode == "200")
+                                    result = TransactionResultType.Success;
+                                else
+                                    result = TransactionResultType.Failed;
+
+                                response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.Subscriber.ipnMessage);
+                                response.RequestMessageID = this.requestMessageID;
+                                response.CardTypeRaw = dialog.Subscriber.ipnCardType;
+                                response.EftposTransactionReference = dialog.VNPayTransRef;
+                                response.Amount = request.Amount;
+                                response.Attributes = new List<AttributeType>()
                             {
                                 new AttributeType()
                                 {
@@ -92,6 +103,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                                     Value = dialog.Subscriber.ipnResponseCode
                                 }
                             }.ToArray();
+                            }
                         }
                     }
                 }
