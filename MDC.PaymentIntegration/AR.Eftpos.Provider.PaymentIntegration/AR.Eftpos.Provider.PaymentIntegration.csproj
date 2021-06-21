@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Business\Common.cs" />
     <Compile Include="Business\EftPosX.cs" />
+    <Compile Include="Business\VNPayClient.cs" />
     <Compile Include="Business\VNPayIPNSubscriber.cs" />
     <Compile Include="Service\generatedProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

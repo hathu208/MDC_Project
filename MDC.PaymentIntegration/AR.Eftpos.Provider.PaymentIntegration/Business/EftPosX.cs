@@ -82,6 +82,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                         using (var dialog = new VNPayPayment())
                         {
                             requestMessageID = request.RequestMessageID;
+                            dialog.VNPayMethod = this.vNPayMethod;
                             dialog.TransactionType = request.TransactionType.ToString();
                             dialog.EftPosTransactionId = request.TransactionReference;
                             dialog.EftPosOrderId = request.OrderId != null ? request.OrderId : request.TransactionReference;

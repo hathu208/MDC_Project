@@ -29,5 +29,10 @@ namespace MDC.PaymentIntegration.VNPayPayment
             string customerName = null,
             string language = null);
 
+        bool filterTransaction(
+            string clientTransCode,
+            string psTransCode
+            );
+
     }
 }

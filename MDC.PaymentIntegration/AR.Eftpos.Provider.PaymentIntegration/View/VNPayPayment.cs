@@ -14,6 +14,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 {
     public partial class VNPayPayment : Form
     {
+        public log4net.ILog Log;
+
         private bool isSubscribing = false;
 
         public  VNPayIPNSubscriber Subscriber;
@@ -73,12 +75,31 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { vNPayMethod = value; }
         }
 
+        //Result from service
+        private string responseCode = "";
+
+        public string ResponseCode
+        {
+            get { return responseCode; }
+            set { responseCode = value; }
+        }
+
+        private string responseMessage = "";
+
+        public string ResponseMessage
+        {
+            get { return responseMessage; }
+            set { responseMessage = value; }
+        }
+
         public VNPayPayment()
         {
             InitializeComponent();
+            this.Log = log4net.LogManager.GetLogger(typeof(VNPayPayment));
             /*transactionType = "Purchase";
             eftPosTransactionId = "1111111115";
             eftPosOrderId = "Ord1111111111";
+            vNPayMethod = Common.VNPayMethodCode.SPOSCARD;
             amount = 1000;*/
         }
 
@@ -87,23 +108,30 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             //init value
             txtAmount.Text = this.amount.ToString();
             txtTransactionId.Text = this.EftPosTransactionId;
-            //gen qr
-            IPayment qrPay = new Payment();
 
-            bool result = qrPay.genQR(eftPosTransactionId, eftPosOrderId, eftPosOrderId, string.Format("{0} {1}", transactionType, eftPosTransactionId), amount, vNPayMethod);
-            txtRequest.Text = (qrPay as Payment).stringRequest;
+            //gen vnpay payment transaction
+            bool result = VNPayClient.InitializeTrans(this);
+            
             if (result)
             {
-                this.vnPayTransRef = qrPay.APIResponse.psTransactionCode;
                 txtTransRef.Text = this.vnPayTransRef;
                 txtResponse.Text = "Khởi tạo thành công";
                 this.RunSubscriber();
+
+                if (this.responseCode == Common.VNPAY_RESPONSE_CODE_SUCCESS)
+                {
+                    this.DialogResult = DialogResult.OK;
+                }
+                else
+                {
+                    MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.DialogResult = DialogResult.Cancel;
+                }
             }
             else
             {
-                txtResponse.Text = string.Format("{0} - {1}", qrPay.APIResponse.errors.code, qrPay.APIResponse.errors.message);
+                txtResponse.Text = this.responseMessage;
             }
-            //this.RunSubscriber();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -124,14 +152,15 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             this.txtResponse.Enabled = !isLoading;
             this.txtTransRef.Enabled = !isLoading;
             this.btnQRPay.Enabled = !isLoading;
-            this.button1.Enabled = !isLoading;
+            this.btnRecall.Enabled = !isLoading;
         }
 
         private void RunSubscriber()
         {
             try
             {
-                Subscriber = new VNPayIPNSubscriber();
+                this.Log.Info("Starting subscriber...");
+                Subscriber = new VNPayIPNSubscriber(this.Log);
                 Subscriber.VnPayTransRef = this.vnPayTransRef;
                 Subscriber.EftPosTransactionId = this.eftPosTransactionId;
 
@@ -150,8 +179,24 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             catch(Exception e)
             {
                 this.txtResponse.Text = e.Message;
+                this.Log.Error("RunSubscriber Failed", e);
             }
         }
-       
+
+        private void btnRecall_Click(object sender, EventArgs e)
+        {
+            bool result;
+            result = VNPayClient.RecallResultTrans(this);//, out this.responseCode, out this.responseMessage);
+            if (result)
+            {
+                this.DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Cancel;
+            }
+            this.Close();
+        }
     }
 }

@@ -22,7 +22,13 @@ namespace MDC.PaymentIntegration.PaymentIntegration.Configure
             get { return methodSpos; }
             set { methodSpos = value; }
         }
+        private string methodFilterTrans = "";
 
+        public string MethodFilterTrans
+        {
+            get { return methodFilterTrans; }
+            set { methodFilterTrans = value; }
+        }
 
         private string clientCode = "";
         public string ClientCode

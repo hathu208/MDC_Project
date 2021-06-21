@@ -10,6 +10,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         private VNPayIPNPublishServiceClient myClient;
         private readonly Thread workerThread;
         private readonly ManualResetEvent stopEvent = new ManualResetEvent(false);
+        //log
+        private log4net.ILog log;
         //eft trans
         public string VnPayTransRef;
         public string EftPosTransactionId;
@@ -20,8 +22,9 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         public string ipnResponseCode = "";
         public string ipnMessage = "";
 
-        public VNPayIPNSubscriber()
+        public VNPayIPNSubscriber(log4net.ILog _log)
         {
+            this.log = _log;
             workerThread = new Thread(ReceiveData);
             workerThread.Start();
         }
@@ -31,6 +34,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             stopEvent.Set();
             myClient.Unsubscribe();
             myClient.Close();
+            log.Info("Stoping subscriber.");
             workerThread.Join();
         }
 
@@ -66,6 +70,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             }
             catch (Exception e)
             {
+                log.Error("AddSubscriber Failed", e);
                 throw new Exception("Subscriber VNPay service đang bị lỗi. Thử 'Recall' để gọi lại kết quả.");
             }
         }
@@ -91,6 +96,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             {
                 ipnMessage = string.Format("{0} - {1}", request.responseCode, request.responseMessage);
             }
+            log.Info(string.Format("SubscribeResultTransChange Code: {0} - Message: {1}", request.responseCode, request.responseMessage));
         }
     }
 }

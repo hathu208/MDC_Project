@@ -52,12 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\Requests\IPNRequest.cs" />
+    <Compile Include="Entity\Requests\RequestFilterTrans.cs" />
     <Compile Include="Entity\Responses\ErrorResponse.cs" />
     <Compile Include="Entity\Requests\MetadataRequest.cs" />
     <Compile Include="Entity\Responses\GenQRResponse.cs" />
     <Compile Include="Entity\Requests\Request.cs" />
     <Compile Include="Entity\Responses\IPNResponse.cs" />
     <Compile Include="Entity\Responses\Response.cs" />
+    <Compile Include="Entity\Responses\FilterTransResponse.cs" />
     <Compile Include="Entity\Responses\SPOSResponse.cs" />
     <Compile Include="Interactor\IPayment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

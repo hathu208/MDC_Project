@@ -42,73 +42,81 @@
             this.txtTransRef = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnRecall = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtRequest
             // 
-            this.txtRequest.Location = new System.Drawing.Point(132, 347);
+            this.txtRequest.Location = new System.Drawing.Point(99, 282);
+            this.txtRequest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtRequest.Name = "txtRequest";
-            this.txtRequest.Size = new System.Drawing.Size(453, 22);
+            this.txtRequest.Size = new System.Drawing.Size(341, 20);
             this.txtRequest.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 348);
+            this.label1.Location = new System.Drawing.Point(8, 283);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 17);
+            this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Request";
             // 
             // txtResponse
             // 
-            this.txtResponse.Location = new System.Drawing.Point(191, 148);
+            this.txtResponse.Location = new System.Drawing.Point(143, 120);
+            this.txtResponse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtResponse.Name = "txtResponse";
-            this.txtResponse.Size = new System.Drawing.Size(453, 22);
+            this.txtResponse.Size = new System.Drawing.Size(341, 20);
             this.txtResponse.TabIndex = 2;
             // 
             // btnQRPay
             // 
             this.btnQRPay.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnQRPay.Location = new System.Drawing.Point(191, 212);
+            this.btnQRPay.Location = new System.Drawing.Point(143, 172);
+            this.btnQRPay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnQRPay.Name = "btnQRPay";
-            this.btnQRPay.Size = new System.Drawing.Size(134, 27);
+            this.btnQRPay.Size = new System.Drawing.Size(100, 22);
             this.btnQRPay.TabIndex = 4;
             this.btnQRPay.Text = "&OK";
             this.btnQRPay.UseVisualStyleBackColor = true;
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(191, 70);
+            this.txtAmount.Location = new System.Drawing.Point(143, 57);
+            this.txtAmount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(146, 22);
+            this.txtAmount.Size = new System.Drawing.Size(110, 20);
             this.txtAmount.TabIndex = 5;
             this.txtAmount.Text = "1000";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(30, 153);
+            this.label4.Location = new System.Drawing.Point(22, 124);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(133, 17);
+            this.label4.Size = new System.Drawing.Size(100, 13);
             this.label4.TabIndex = 8;
             this.label4.Text = "Response message";
             // 
             // txtTransactionId
             // 
-            this.txtTransactionId.Location = new System.Drawing.Point(132, 391);
+            this.txtTransactionId.Location = new System.Drawing.Point(99, 318);
+            this.txtTransactionId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTransactionId.Name = "txtTransactionId";
-            this.txtTransactionId.Size = new System.Drawing.Size(146, 22);
+            this.txtTransactionId.Size = new System.Drawing.Size(110, 20);
             this.txtTransactionId.TabIndex = 7;
             this.txtTransactionId.Text = "1111111111";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 75);
+            this.label3.Location = new System.Drawing.Point(22, 61);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 17);
+            this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Amount";
             // 
@@ -116,26 +124,29 @@
             // 
             this.lblHeader.AutoSize = true;
             this.lblHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHeader.Location = new System.Drawing.Point(30, 19);
+            this.lblHeader.Location = new System.Drawing.Point(22, 15);
+            this.lblHeader.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(86, 25);
+            this.lblHeader.Size = new System.Drawing.Size(69, 20);
             this.lblHeader.TabIndex = 10;
             this.lblHeader.Text = "QR Pay";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(30, 114);
+            this.label5.Location = new System.Drawing.Point(22, 93);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(150, 17);
+            this.label5.Size = new System.Drawing.Size(113, 13);
             this.label5.TabIndex = 12;
             this.label5.Text = "VNPay transaction ref.";
             // 
             // txtTransRef
             // 
-            this.txtTransRef.Location = new System.Drawing.Point(191, 109);
+            this.txtTransRef.Location = new System.Drawing.Point(143, 89);
+            this.txtTransRef.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTransRef.Name = "txtTransRef";
-            this.txtTransRef.Size = new System.Drawing.Size(453, 22);
+            this.txtTransRef.Size = new System.Drawing.Size(341, 20);
             this.txtTransRef.TabIndex = 11;
             // 
             // timer1
@@ -144,30 +155,33 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(35, 265);
+            this.progressBar1.Location = new System.Drawing.Point(26, 215);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(609, 22);
+            this.progressBar1.Size = new System.Drawing.Size(457, 18);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 14;
             this.progressBar1.UseWaitCursor = true;
             this.progressBar1.Visible = false;
             // 
-            // button1
+            // btnRecall
             // 
-            this.button1.Location = new System.Drawing.Point(373, 212);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(138, 28);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Recall";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnRecall.Location = new System.Drawing.Point(280, 172);
+            this.btnRecall.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRecall.Name = "btnRecall";
+            this.btnRecall.Size = new System.Drawing.Size(104, 23);
+            this.btnRecall.TabIndex = 13;
+            this.btnRecall.Text = "Recall";
+            this.btnRecall.UseVisualStyleBackColor = true;
+            this.btnRecall.Click += new System.EventHandler(this.btnRecall_Click);
             // 
             // VNPayPayment
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LemonChiffon;
-            this.ClientSize = new System.Drawing.Size(725, 450);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(544, 366);
+            this.Controls.Add(this.btnRecall);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtTransRef);
@@ -180,6 +194,7 @@
             this.Controls.Add(this.txtResponse);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtRequest);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "VNPayPayment";
             this.Text = "VNPay Integration";
             this.Load += new System.EventHandler(this.VNPayPayment_Load);
@@ -203,7 +218,7 @@
         private System.Windows.Forms.TextBox txtTransRef;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRecall;
     }
 }
 

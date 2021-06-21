@@ -13,6 +13,7 @@ namespace MDC.PaymentIntegration.VNPayPayment
     {
         public string apiKey;
         public string stringRequest;
+        public string stringResponse;
         private Response response;
         public Response APIResponse
         {
@@ -58,6 +59,7 @@ namespace MDC.PaymentIntegration.VNPayPayment
             stringRequest = JsonConvert.SerializeObject(request, Formatting.None, jsonSettings);
 
             apiController.SendRequest(request);
+            stringResponse = apiController.ResponseString;
             response = JsonConvert.DeserializeObject< GenQRResponse>(apiController.ResponseString);
             return response.success;
         }
@@ -100,9 +102,45 @@ namespace MDC.PaymentIntegration.VNPayPayment
 
             apiController.SendRequest(request);
             response = JsonConvert.DeserializeObject<SPOSResponse>(apiController.ResponseString);
+            stringResponse = apiController.ResponseString;
             return response.success;
         }
 
-        
+        public bool filterTransaction(string clientTransCode, string psTransactionCode)
+        {
+            PaymentIntegration.Configure.PaymentIntegrationConfig paymentConfig = PaymentIntegration.Configure.PaymentIntegrationConfig.PaymentConfig;
+
+            string url = paymentConfig.VNPayPayment.MethodFilterTrans;
+            string apikey = string.Format("{0} {1}", paymentConfig.VNPayPayment.SecretKeyName, paymentConfig.VNPayPayment.SecretKey);
+
+            RequestFilterTrans request = new RequestFilterTrans();
+            request.clientCode = paymentConfig.VNPayPayment.ClientCode;
+            request.psTransactionCode = psTransactionCode;
+            request.clientTransactionCode = clientTransCode;
+
+            url += "?client_code=" + paymentConfig.VNPayPayment.ClientCode;
+            url += "&client_transaction_code=" + clientTransCode;
+            if (psTransactionCode != "")
+            {
+                url += "&ps_transaction_code=" + psTransactionCode;
+            }
+
+
+            Checksum checksum = new Checksum();
+            string strChecksum = checksum.generateCheckSum(request, paymentConfig.VNPayPayment.SecretKey);
+            url += "&checksum=" + strChecksum;
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            APIController apiController = new APIController(APIController.APIMethod.GET, url, apikey);
+
+            apiController.SendRequest();
+            stringResponse = apiController.ResponseString;
+            response = JsonConvert.DeserializeObject<FilterTransResponse>(apiController.ResponseString);
+            return response.success;
+        }
+
     }
 }
