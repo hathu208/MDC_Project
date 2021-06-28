@@ -43,6 +43,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json.Net20">
+      <HintPath>..\lib\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -64,16 +67,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="VNPayIPNService.svc" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Respository\Checksum.cs" />
     <Compile Include="DataContract\IPNRequest.cs" />
     <Compile Include="DataContract\IPNResponse.cs" />
-    <Compile Include="generatedProxy.cs" />
-    <Compile Include="VNPayIPNService.cs" />
-    <Compile Include="IVNPayIPNService.cs" />
+    <Compile Include="Service\generatedProxy.cs" />
+    <Compile Include="Respository\VNPayIPNService.cs" />
+    <Compile Include="Interactor\IVNPayIPNService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,12 +83,15 @@
   <ItemGroup>
     <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\MDCProfile.pubxml" />
-    <None Include="Web.Debug.config">
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
+    </Content>
+    <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
-    </None>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

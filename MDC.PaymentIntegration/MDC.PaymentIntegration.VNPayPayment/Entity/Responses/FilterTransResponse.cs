@@ -8,11 +8,32 @@ namespace MDC.PaymentIntegration.VNPayPayment.Entity
     public class FilterTransResponse : Response
     {
         public DataFilterTransResponse data { get; set; }
-        public override string psTransactionCode => data.psTransactionCode;
+        public override string psTransactionCode
+        {
+            get
+            {
+                if (data != null)
+                {
+                    return data.psTransactionCode;
+                }
+                return null;
+            }
+        }
 
         public override string psResponseCode => data.psResponseCode;
 
-        public override string psResponseMessage => data.psResponseMessage;
+        public override string psResponseMessage
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(data.psResponseMessage))
+                {
+                    return data.status + " " + data.statusName;
+                }
+                return data.psResponseMessage;
+            }
+        }
+        
     }
 
     public class DataFilterTransResponse
@@ -29,6 +50,7 @@ namespace MDC.PaymentIntegration.VNPayPayment.Entity
         public string methodCode { get; set; }
         public string partnerCode { get; set; }
         public int code { get; set; }
+        public string statusName { get; set; }
     }
 
 }

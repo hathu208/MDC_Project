@@ -34,8 +34,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                         formPayment.Amount,
                         formPayment.VNPayMethod);
                 }
-                formPayment.Log.Info((vnpay as Payment).stringRequest);
-                formPayment.Log.Info((vnpay as Payment).stringResponse);
+                formPayment.Log.Info("Init request: " + (vnpay as Payment).stringRequest);
+                formPayment.Log.Info("Init response: " + (vnpay as Payment).stringResponse);
 
                 if (result)
                 {
@@ -63,10 +63,10 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             try
             {
                 result = payment.filterTransaction(formPayment.EftPosTransactionId, formPayment.VNPayTransRef);
-                formPayment.Log.Info((payment as Payment).stringResponse);
+                formPayment.Log.Info("Recall response: " + (payment as Payment).stringResponse);
                 if (result)
                 {
-                    if (payment.APIResponse.psResponseCode != Common.VNPAY_RESPONSE_CODE_SUCCESS)
+                    if (payment.APIResponse.psResponseCode != Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS)
                         result = false;
 
                     formPayment.ResponseCode = payment.APIResponse.psResponseCode;
@@ -76,9 +76,9 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                 {
                     formPayment.ResponseMessage = payment.APIResponse.message;
                 }
-                
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 result = false;
                 formPayment.ResponseMessage = e.Message;

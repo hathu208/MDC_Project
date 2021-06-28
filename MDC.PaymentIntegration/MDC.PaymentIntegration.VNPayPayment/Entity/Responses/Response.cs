@@ -7,11 +7,11 @@ namespace MDC.PaymentIntegration.VNPayPayment.Entity
 {
     public class Response
     {
-        public int code { get; }
+        public int code { get; set; }
 
-        public bool success { get; }
+        public bool success { get; set; }
 
-        public string message { get; }
+        public string message { get; set; }
 
         public ErrorResponse errors { get; set; }
 

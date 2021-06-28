@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDC.PaymentIntegration", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDC.PaymentIntegration.VNPayPayment", "MDC.PaymentIntegration.VNPayPayment\MDC.PaymentIntegration.VNPayPayment.csproj", "{36AA0791-C314-44CE-94CC-C9DADD70622E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDC.PaymentIntegration.VNPayIPNService", "MDC.PaymentIntegration.VNPayIPNService\MDC.PaymentIntegration.VNPayIPNService.csproj", "{522FD2C1-6C42-4F1B-80E8-D027E82284D5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AR.Eftpos.Provider.PaymentIntegration", "AR.Eftpos.Provider.PaymentIntegration\AR.Eftpos.Provider.PaymentIntegration.csproj", "{151D8D59-BFA6-4768-A377-19925625414A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProvider", "TestProvider\TestProvider.csproj", "{196B525F-84D7-4AB9-BBA2-C8B135E2B1F0}"
@@ -31,10 +29,6 @@ Global
 		{36AA0791-C314-44CE-94CC-C9DADD70622E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36AA0791-C314-44CE-94CC-C9DADD70622E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36AA0791-C314-44CE-94CC-C9DADD70622E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{522FD2C1-6C42-4F1B-80E8-D027E82284D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{522FD2C1-6C42-4F1B-80E8-D027E82284D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{522FD2C1-6C42-4F1B-80E8-D027E82284D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{522FD2C1-6C42-4F1B-80E8-D027E82284D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{151D8D59-BFA6-4768-A377-19925625414A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{151D8D59-BFA6-4768-A377-19925625414A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{151D8D59-BFA6-4768-A377-19925625414A}.Release|Any CPU.ActiveCfg = Release|Any CPU

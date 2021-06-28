@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Threading;
+using System.Windows.Forms;
 using MDC.PaymentIntegration.VNPayIPNService;
 
 namespace AR.Eftpos.Provider.PaymentIntegration
@@ -26,6 +27,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         {
             this.log = _log;
             workerThread = new Thread(ReceiveData);
+            workerThread.IsBackground = true;
             workerThread.Start();
         }
 
@@ -34,7 +36,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             stopEvent.Set();
             myClient.Unsubscribe();
             myClient.Close();
-            log.Info("Stoping subscriber.");
+            log.Debug("Stoping subscriber.");
             workerThread.Join();
         }
 
@@ -57,6 +59,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                 InstanceContext siteHostContext = new InstanceContext(null, this);
 
                 myClient = new VNPayIPNPublishServiceClient(siteHostContext);
+                //myClient.ClientCredentials.UserName.UserName = @"vnpay_ipn";
+                //myClient.ClientCredentials.UserName.Password = "ipn123@";
 
                 // create a unique callback address (if you want multiple subscribers to run on the same machine)
                 WSDualHttpBinding binding = (WSDualHttpBinding)myClient.Endpoint.Binding;
@@ -71,13 +75,14 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             catch (Exception e)
             {
                 log.Error("AddSubscriber Failed", e);
+                MessageBox.Show(string.Format("{0}\r\nMessage: {1}\r\n{2}: {3}", e.GetType().ToString(), e.Message, e.InnerException.GetType().ToString(), e.InnerException.Message), "Add subscriber");
                 throw new Exception("Subscriber VNPay service đang bị lỗi. Thử 'Recall' để gọi lại kết quả.");
             }
         }
 
         void IVNPayIPNPublishServiceCallback.SubscribeResultTransChange(IPNRequest request)
         {
-            if (request.responseCode == "200")
+            if (request.responseCode == Common.VNPAY_RESPONSE_CODE_SUCCESS)
             {
                 if (request.psTransactionCode == this.VnPayTransRef && request.clientTransactionCode == this.EftPosTransactionId)
                 {
@@ -96,7 +101,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             {
                 ipnMessage = string.Format("{0} - {1}", request.responseCode, request.responseMessage);
             }
-            log.Info(string.Format("SubscribeResultTransChange Code: {0} - Message: {1}", request.responseCode, request.responseMessage));
+            log.Debug(string.Format("SubscribeResultTransChange Code: {0} - Message: {1}", request.responseCode, request.responseMessage));
         }
     }
 }

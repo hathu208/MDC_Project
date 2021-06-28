@@ -15,9 +15,16 @@ namespace TestProvider
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new VNPayPayment());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new VNPayPayment());
+            }
+            catch(Exception e)
+            {
+                Console.Write(e.Message);
+            }
         }
     }
 }

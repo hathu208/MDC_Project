@@ -85,6 +85,9 @@ namespace MDC.PaymentIntegration.VNPayIPNService
 
                 //Closing the client gracefully closes the connection and cleans up resources
                 myClient.Close();
+
+                result.code = request.responseCode;
+                result.message = request.responseMessage;
             }
             catch (FaultException e)
             {

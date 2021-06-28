@@ -46,12 +46,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
         public EftPosX() : base()
         {
-            this.log = log4net.LogManager.GetLogger(typeof(EftPosX));
-        }
-
-        public override void Dispose()
-        {
-            throw new NotImplementedException();
+            log4net.Config.XmlConfigurator.Configure();
+            this.log = log4net.LogManager.GetLogger(typeof(EftPosX).Name);
         }
 
         #region EftposTransaction
@@ -90,10 +86,13 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
                             if (dialog.ShowDialog() == DialogResult.OK)
                             {
-                                if (dialog.Subscriber.ipnResponseCode == "200")
+                                if (dialog.ResponseCode == Common.VNPAY_RESPONSE_CODE_SUCCESS
+                                    || dialog.ResponseCode == Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS)
                                     result = TransactionResultType.Success;
                                 else
                                     result = TransactionResultType.Failed;
+
+                                log.Info("EftposTransaction success - " + dialog.Subscriber.ipnMessage);
 
                                 response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.Subscriber.ipnMessage);
                                 response.RequestMessageID = this.requestMessageID;
@@ -114,6 +113,11 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                                 }
                             }.ToArray();
                             }
+                            else
+                            {
+                                log.Error("EftposTransaction - Process with VNPay is failed.");
+                                response = (TransactionResponseType)EftposHelper.QuickResponse(request, TransactionResultType.Failed, "Process with VNPay is failed.");
+                            }
                         }
                     }
                 }
@@ -121,11 +125,17 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             }
             catch (Exception ex)
             {
+                log.Error("EftposTransaction Failed", ex);
                 return (TransactionResponseType)EftposHelper.QuickResponse(request, TransactionResultType.Failed, "DoTransaction - Provider Error, See log for details");
             }
 
              
             return response;
+        }
+
+        public override void Dispose()
+        {
+            this.log.Info(new String('=', 100));
         }
     }
 }
