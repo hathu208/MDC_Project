@@ -17,20 +17,20 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                 if (formPayment.VNPayMethod == Common.VNPayMethodCode.QRCODE)
                 {
                     result = vnpay.genQR(
-                        formPayment.EftPosTransactionId,
-                        formPayment.EftPosOrderId,
-                        formPayment.EftPosOrderId,
-                        string.Format("{0} {1}", formPayment.TransactionType, formPayment.EftPosTransactionId),
+                        formPayment.TransactionId,
+                        formPayment.TransactionRef,
+                        formPayment.PosBranchNo,
+                        string.Format("{0} {1}", formPayment.TransactionType, formPayment.TransactionId),
                         formPayment.Amount,
                         formPayment.VNPayMethod);
                 }
                 else if (formPayment.VNPayMethod == Common.VNPayMethodCode.SPOSCARD)
                 {
                     result = vnpay.sPosTransaction(
-                        formPayment.EftPosTransactionId,
-                        formPayment.EftPosOrderId,
-                        formPayment.EftPosOrderId,
-                        string.Format("{0} {1}", formPayment.TransactionType, formPayment.EftPosTransactionId),
+                        formPayment.TransactionId,
+                        formPayment.TransactionRef,
+                        formPayment.PosBranchNo,
+                        string.Format("{0} {1}", formPayment.TransactionType, formPayment.TransactionId),
                         formPayment.Amount,
                         formPayment.VNPayMethod);
                 }
@@ -55,22 +55,20 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
             return result;
         }
-        public static bool RecallResultTrans(VNPayPayment formPayment)//, out string responseCode, out string responseMessage)
+        public static bool GetResultTrans(VNPayPayment formPayment)//, out string responseCode, out string responseMessage)
         {
             IPayment payment = new Payment();
             bool result = false;
 
             try
             {
-                result = payment.filterTransaction(formPayment.EftPosTransactionId, formPayment.VNPayTransRef);
-                formPayment.Log.Info("Recall response: " + (payment as Payment).stringResponse);
+                result = payment.filterTransaction(formPayment.TransactionId, formPayment.VNPayTransRef);
+                formPayment.Log.Info("Get result response: " + (payment as Payment).stringResponse);
                 if (result)
                 {
-                    if (payment.APIResponse.psResponseCode != Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS)
-                        result = false;
-
                     formPayment.ResponseCode = payment.APIResponse.psResponseCode;
                     formPayment.ResponseMessage = payment.APIResponse.psResponseMessage;
+                    formPayment.ResponseStatus = payment.APIResponse.status;
                 }
                 else
                 {
@@ -81,8 +79,8 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             catch (Exception e)
             {
                 result = false;
-                formPayment.ResponseMessage = e.Message;
-                formPayment.Log.Error("RecallResultTrans Failed", e);
+                formPayment.ResponseMessage = "Call service get result is failed.";
+                formPayment.Log.Error("GetResultTrans Failed", e);
             }
 
             return result;

@@ -28,12 +28,14 @@ namespace MDC.PaymentIntegration.VNPayPayment.Entity
             {
                 if(string.IsNullOrEmpty(data.psResponseMessage))
                 {
-                    return data.status + " " + data.statusName;
+                    return string.Format("Code: {0} - {1} {2}", data.code, data.status, data.statusName);
                 }
                 return data.psResponseMessage;
             }
         }
-        
+
+        public override string status => data.status;
+
     }
 
     public class DataFilterTransResponse

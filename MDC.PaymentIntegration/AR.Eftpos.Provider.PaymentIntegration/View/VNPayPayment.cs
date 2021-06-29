@@ -1,14 +1,15 @@
 ﻿using AR.Eftpos.Bus.Managers;
-using MDC.PaymentIntegration.VNPayIPNService;
 using MDC.PaymentIntegration.VNPayPayment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace AR.Eftpos.Provider.PaymentIntegration
@@ -16,10 +17,6 @@ namespace AR.Eftpos.Provider.PaymentIntegration
     public partial class VNPayPayment : Form
     {
         public log4net.ILog Log;
-
-        private bool isSubscribing = false;
-
-        public  VNPayIPNSubscriber Subscriber;
 
         private string transactionType;
 
@@ -29,20 +26,36 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { transactionType = value; }
         }
 
-        private string eftPosTransactionId;
+        private string transactionId;
 
-        public string EftPosTransactionId
+        public string TransactionId
         {
-            get { return eftPosTransactionId; }
-            set { eftPosTransactionId = value; }
+            get { return transactionId; }
+            set { transactionId = value; }
         }
 
-        private string eftPosOrderId;
+        private string transactionRef;
 
-        public string EftPosOrderId
+        public string TransactionRef
         {
-            get { return eftPosOrderId; }
-            set { eftPosOrderId = value; }
+            get { return transactionRef; }
+            set { transactionRef = value; }
+        }
+
+        private string posWrkStationNo;
+
+        public string PosWrkStationNo
+        {
+            get { return posWrkStationNo; }
+            set { posWrkStationNo = value; }
+        }
+
+        private string posBranchNo;
+
+        public string PosBranchNo
+        {
+            get { return posBranchNo; }
+            set { posBranchNo = value; }
         }
 
         private long amount = 0;
@@ -51,7 +64,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
         {
             get
             {
-                long.TryParse(this.txtAmount.Text, out amount);
+                long.TryParse(this.lblAmount.Text, out amount);
                 return amount;
             }
             set
@@ -68,7 +81,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { vnPayTransRef = value; }
         }
 
-        private string vNPayMethod;
+        private string vNPayMethod = "QRCODE";
 
         public string VNPayMethod
         {
@@ -93,146 +106,125 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { responseMessage = value; }
         }
 
+        private string responseStatus = "";
+
+        public string ResponseStatus
+        {
+            get { return responseStatus; }
+            set { responseStatus = value; }
+        }
+
+        private bool isManualUpdate;
+
+        public bool IsManualUpdate
+        {
+            get { return isManualUpdate; }
+            set { isManualUpdate = value; }
+        }
+
+
         public VNPayPayment()
         {
             InitializeComponent();
             log4net.Config.XmlConfigurator.Configure();
             this.Log = log4net.LogManager.GetLogger(typeof(EftPosX));
+            lblManualComplete.Text = Resource.ManualUpdate;
+
+            if (vNPayMethod == Common.VNPayMethodCode.QRCODE)
+            {
+                lblHeader.Text = Resource.QRHeader;
+                lblSubTitle.Text = Resource.QRSubTitle;
+            }
+            else if(vNPayMethod == Common.VNPayMethodCode.SPOSCARD)
+            {
+                lblHeader.Text = Resource.BankCardHeader;
+                lblSubTitle.Text = Resource.BankCardSubTitle;
+            }
 
 
-            transactionType = "Purchase";
-            eftPosTransactionId = "1000017154125";
-            eftPosOrderId = "1000017154125";
+            /*transactionType = "Purchase";
+            transactionId = "1000017154125";
+            posWrkStationNo = "1000017154125";
             vNPayMethod = Common.VNPayMethodCode.SPOSCARD;
-            amount = 1000;
+            amount = 100000;*/
         }
 
         private void VNPayPayment_Load(object sender, EventArgs e)
         {
+            this.Log.Debug("Initialize VNPAY transaction...");
             //init value
-            txtAmount.Text = this.amount.ToString();
-            txtTransactionId.Text = this.EftPosTransactionId;
+            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   
+            lblAmount.Text = this.amount.ToString("#,###", cul.NumberFormat);
+            lblTransactionId.Text = this.TransactionId;
 
             //gen vnpay payment transaction
-            /*bool result = VNPayClient.InitializeTrans(this);
+            bool result = VNPayClient.InitializeTrans(this);
             //bool result = true;
             if (result)
             {
-                txtTransRef.Text = this.vnPayTransRef;
-                lblResponse.Text = "Khởi tạo thành công";
-                this.RunSubscriber();
+                lblTransRef.Text = this.vnPayTransRef;
+                lblResponse.Text = Resource.InitSuccess;
+                btnUpdateResult.Enabled = true;
             }
             else
             {
                 lblResponse.Text = this.responseMessage;
-            }*/
-            this.RunSubscriber();
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            var message = Subscriber.ipnMessage;
-            if (isSubscribing && !string.IsNullOrEmpty(message))
-            {
-                this.responseCode = Subscriber.ipnResponseCode;
-                this.responseMessage = message;
-                
-                isSubscribing = false;
-                progressBar1.Visible = false;
-                this.LoadingForm(false);
-
-                if (this.responseCode == Common.VNPAY_RESPONSE_CODE_SUCCESS)
-                {
-                    MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.DialogResult = DialogResult.OK;
-                }
-                else
-                {
-                    this.lblResponse.Text = this.responseMessage;
-                    MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //this.DialogResult = DialogResult.Cancel;
-                }
-            }
-        }
-
-        private void WaitingSubcriber()
-        {
-            var message = Subscriber.ipnMessage;
-            if (isSubscribing && !string.IsNullOrEmpty(message))
-            {
-                this.responseCode = Subscriber.ipnResponseCode;
-                this.responseMessage = message;
-
-                isSubscribing = false;
-                progressBar1.Visible = false;
-                this.LoadingForm(false);
-
-                if (this.responseCode == Common.VNPAY_RESPONSE_CODE_SUCCESS)
-                {
-                    MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.DialogResult = DialogResult.OK;
-                }
-                else
-                {
-                    this.lblResponse.Text = this.responseMessage;
-                    MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //this.DialogResult = DialogResult.Cancel;
-                }
+                MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Cancel;
             }
         }
 
         private void LoadingForm(bool isLoading)
         {
-            this.txtAmount.Enabled = !isLoading;
-            //this.txtTransRef.Enabled = !isLoading;
-            this.btnQRPay.Enabled = !isLoading;
-            this.btnRecall.Enabled = !isLoading;
+            this.btnManual.Enabled = !isLoading;
+            this.btnUpdateResult.Enabled = !isLoading;
             this.UseWaitCursor = isLoading;
         }
 
-        private void RunSubscriber()
+        private void StatusForm(bool isEnable)
         {
-            try
-            {
-                this.Log.Debug("Starting subscriber...");
-                Subscriber = new VNPayIPNSubscriber(this.Log);
-                Subscriber.VnPayTransRef = this.vnPayTransRef;
-                Subscriber.EftPosTransactionId = this.eftPosTransactionId;
-
-                Subscriber.AddSubscriber();
-
-                isSubscribing = true;
-                progressBar1.Visible = true;
-                this.LoadingForm(true);
-
-                timer1.Start();
-                if (!isSubscribing)
-                {
-                    timer1.Stop();
-                }
-            }
-            catch(Exception e)
-            {
-                this.responseMessage = e.Message;
-                this.Log.Error("RunSubscriber Failed", e);
-            }
+            btnManual.Enabled = !isEnable;
+            lblManualComplete.Visible = !isEnable;
         }
 
-        private void btnRecall_Click(object sender, EventArgs e)
+        private void btnUpdateResult_Click(object sender, EventArgs e)
         {
+            this.Log.Debug("Get transaction result...");
             bool result;
-            result = VNPayClient.RecallResultTrans(this);//, out this.responseCode, out this.responseMessage);
-            lblResponse.Text = this.responseMessage;
-            if (result)
+
+            int countRetry = 0;
+            this.StatusForm(true);
+            this.LoadingForm(true);
+
+            while (countRetry < 3)
             {
-                MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.DialogResult = DialogResult.OK;
+                result = VNPayClient.GetResultTrans(this);//, out this.responseCode, out this.responseMessage);
+                lblResponse.Text = this.responseMessage;
+                
+                if (result && (this.responseStatus == Common.VNPayResponseStatus.FAILURE || this.responseStatus == Common.VNPayResponseStatus.SUCCESS))
+                {
+                    MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    return;
+                }
+                else
+                {
+                    countRetry++;
+                    Thread.Sleep(5000);
+                }
             }
-            else
-            {
-                MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //this.DialogResult = DialogResult.Cancel;
-            }
+
+            MessageBox.Show(this, this.responseMessage, "VNpay payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            this.StatusForm(false);
+            this.LoadingForm(false);
+        }
+
+        private void btnManual_Click(object sender, EventArgs e)
+        {
+            this.isManualUpdate = true;
+            this.responseCode = Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS;
+            this.responseMessage = "Manual completed";
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

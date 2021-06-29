@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -114,4 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BankCardHeader" xml:space="preserve">
+    <value>VNPAY Card/ Quẹt thẻ ngân hàng</value>
+  </data>
+  <data name="BankCardSubTitle" xml:space="preserve">
+    <value>Swipe debit/credit from SPOS to complete transaction/ Quẹt thẻ ghi nợ/ tín dụng để thanh toán</value>
+  </data>
+  <data name="InitSuccess" xml:space="preserve">
+    <value>Initialize successfully/ Khởi tạo giao dịch thành công</value>
+  </data>
+  <data name="ManualUpdate" xml:space="preserve">
+    <value>Không nhận được kết quả giao dịch từ VNPay. 
+Thử lại hoặc chọn 'Manual Update' nếu kết quả trên SPOS là thành công.</value>
+  </data>
+  <data name="QRHeader" xml:space="preserve">
+    <value>VNPAY QR/ Quét mã QR</value>
+  </data>
+  <data name="QRSubTitle" xml:space="preserve">
+    <value>Scan QR code from SPOS to complete transaction/ Quét mã QR để thanh toán</value>
+  </data>
 </root>

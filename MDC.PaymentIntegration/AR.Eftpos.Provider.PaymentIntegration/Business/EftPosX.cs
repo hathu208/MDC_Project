@@ -15,22 +15,6 @@ namespace AR.Eftpos.Provider.PaymentIntegration
     {
         private string requestMessageID;
 
-        private string vnpayResponseCode;
-
-        public string VnpayResponseCode
-        {
-            get { return vnpayResponseCode; }
-            set { vnpayResponseCode = value; }
-        }
-
-        private string vnpayResponseMessage;
-
-        public string VnpayResponseMessage
-        {
-            get { return vnpayResponseMessage; }
-            set { vnpayResponseMessage = value; }
-        }
-
         private string vNPayMethod;
 
         public string VNPayMethod
@@ -80,36 +64,32 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                             requestMessageID = request.RequestMessageID;
                             dialog.VNPayMethod = this.vNPayMethod;
                             dialog.TransactionType = request.TransactionType.ToString();
-                            dialog.EftPosTransactionId = request.TransactionReference;
-                            dialog.EftPosOrderId = request.OrderId != null ? request.OrderId : request.TransactionReference;
+                            dialog.TransactionRef = request.TransactionReference;
+                            dialog.TransactionId = this.Basket.TransactionNumber.ToString();
+                            dialog.PosWrkStationNo = this.Basket.WorkstationNo.ToString();
+                            dialog.PosBranchNo = this.Basket.BranchNo.ToString();
                             dialog.Amount = Convert.ToInt64(request.Amount);
 
                             if (dialog.ShowDialog() == DialogResult.OK)
                             {
-                                if (dialog.ResponseCode == Common.VNPAY_RESPONSE_CODE_SUCCESS
-                                    || dialog.ResponseCode == Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS)
+                                if (dialog.ResponseCode == Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS)
                                     result = TransactionResultType.Success;
                                 else
                                     result = TransactionResultType.Failed;
 
-                                log.Info("EftposTransaction success - " + dialog.Subscriber.ipnMessage);
+                                log.Info("EftposTransaction success - " + dialog.ResponseMessage);
 
-                                response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.Subscriber.ipnMessage);
+                                response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.ResponseMessage);
                                 response.RequestMessageID = this.requestMessageID;
-                                response.CardTypeRaw = dialog.Subscriber.ipnCardType;
+                                //response.CardTypeRaw = dialog.Subscriber.ipnCardType;
                                 response.EftposTransactionReference = dialog.VNPayTransRef;
                                 response.Amount = request.Amount;
                                 response.Attributes = new List<AttributeType>()
                             {
                                 new AttributeType()
                                 {
-                                    Name = "BankCode",
-                                    Value = dialog.Subscriber.ipnBankCode
-                                },
-                                new AttributeType()
-                                {
-                                    Name = "VNPayResponseCode",
-                                    Value = dialog.Subscriber.ipnResponseCode
+                                    Name = "ManualComplete",
+                                    Value = dialog.IsManualUpdate.ToString()
                                 }
                             }.ToArray();
                             }

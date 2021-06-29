@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AR.Eftpos.Provider.PaymentIntegration.Properties {
+namespace AR.Eftpos.Provider.PaymentIntegration {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace AR.Eftpos.Provider.PaymentIntegration.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AR.Eftpos.Provider.PaymentIntegration.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AR.Eftpos.Provider.PaymentIntegration.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,61 @@ namespace AR.Eftpos.Provider.PaymentIntegration.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VNPAY Card/ Quẹt thẻ ngân hàng.
+        /// </summary>
+        internal static string BankCardHeader {
+            get {
+                return ResourceManager.GetString("BankCardHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swipe debit/credit from SPOS to complete transaction/ Quẹt thẻ ghi nợ/ tín dụng để thanh toán.
+        /// </summary>
+        internal static string BankCardSubTitle {
+            get {
+                return ResourceManager.GetString("BankCardSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialize successfully/ Khởi tạo giao dịch thành công.
+        /// </summary>
+        internal static string InitSuccess {
+            get {
+                return ResourceManager.GetString("InitSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không nhận được kết quả giao dịch từ VNPay. 
+        ///Thử lại hoặc chọn &apos;Manual Update&apos; nếu kết quả trên SPOS là thành công..
+        /// </summary>
+        internal static string ManualUpdate {
+            get {
+                return ResourceManager.GetString("ManualUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VNPAY QR/ Quét mã QR.
+        /// </summary>
+        internal static string QRHeader {
+            get {
+                return ResourceManager.GetString("QRHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan QR code from SPOS to complete transaction/ Quét mã QR để thanh toán.
+        /// </summary>
+        internal static string QRSubTitle {
+            get {
+                return ResourceManager.GetString("QRSubTitle", resourceCulture);
             }
         }
     }

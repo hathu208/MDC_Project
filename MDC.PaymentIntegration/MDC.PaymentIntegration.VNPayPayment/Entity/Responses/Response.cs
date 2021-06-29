@@ -18,6 +18,7 @@ namespace MDC.PaymentIntegration.VNPayPayment.Entity
         public virtual string psTransactionCode { get ; }
         public virtual string psResponseCode { get; }
         public virtual string psResponseMessage { get; }
+        public virtual string status { get; }
 
     }
 }
