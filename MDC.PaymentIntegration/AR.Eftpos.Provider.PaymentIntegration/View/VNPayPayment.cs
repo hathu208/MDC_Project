@@ -58,13 +58,12 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             set { posBranchNo = value; }
         }
 
-        private long amount = 0;
+        private long amount;
 
         public long Amount
         {
             get
             {
-                long.TryParse(this.lblAmount.Text, out amount);
                 return amount;
             }
             set
@@ -130,18 +129,6 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             this.Log = log4net.LogManager.GetLogger(typeof(EftPosX));
             lblManualComplete.Text = Resource.ManualUpdate;
 
-            if (vNPayMethod == Common.VNPayMethodCode.QRCODE)
-            {
-                lblHeader.Text = Resource.QRHeader;
-                lblSubTitle.Text = Resource.QRSubTitle;
-            }
-            else if(vNPayMethod == Common.VNPayMethodCode.SPOSCARD)
-            {
-                lblHeader.Text = Resource.BankCardHeader;
-                lblSubTitle.Text = Resource.BankCardSubTitle;
-            }
-
-
             /*transactionType = "Purchase";
             transactionId = "1000017154125";
             posWrkStationNo = "1000017154125";
@@ -155,7 +142,18 @@ namespace AR.Eftpos.Provider.PaymentIntegration
             //init value
             CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   
             lblAmount.Text = this.amount.ToString("#,###", cul.NumberFormat);
-            lblTransactionId.Text = this.TransactionId;
+            lblTransactionRef.Text = this.transactionRef;
+
+            if (vNPayMethod == Common.VNPayMethodCode.QRCODE)
+            {
+                lblHeader.Text = Resource.QRHeader;
+                lblSubTitle.Text = Resource.QRSubTitle;
+            }
+            else if (vNPayMethod == Common.VNPayMethodCode.SPOSCARD)
+            {
+                lblHeader.Text = Resource.BankCardHeader;
+                lblSubTitle.Text = Resource.BankCardSubTitle;
+            }
 
             //gen vnpay payment transaction
             bool result = VNPayClient.InitializeTrans(this);

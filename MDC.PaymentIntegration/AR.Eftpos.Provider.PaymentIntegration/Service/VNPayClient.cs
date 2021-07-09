@@ -17,20 +17,20 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                 if (formPayment.VNPayMethod == Common.VNPayMethodCode.QRCODE)
                 {
                     result = vnpay.genQR(
+                        formPayment.TransactionRef,
                         formPayment.TransactionId,
                         formPayment.TransactionRef,
-                        formPayment.PosBranchNo,
-                        string.Format("{0} {1}", formPayment.TransactionType, formPayment.TransactionId),
+                        string.Format("Workstation {0} - Branch {1}", formPayment.PosWrkStationNo, formPayment.PosBranchNo),
                         formPayment.Amount,
                         formPayment.VNPayMethod);
                 }
                 else if (formPayment.VNPayMethod == Common.VNPayMethodCode.SPOSCARD)
                 {
                     result = vnpay.sPosTransaction(
+                        formPayment.TransactionRef,
                         formPayment.TransactionId,
                         formPayment.TransactionRef,
-                        formPayment.PosBranchNo,
-                        string.Format("{0} {1}", formPayment.TransactionType, formPayment.TransactionId),
+                        string.Format("Workstation {0} - Branch {1}", formPayment.PosWrkStationNo, formPayment.PosBranchNo),
                         formPayment.Amount,
                         formPayment.VNPayMethod);
                 }
@@ -43,13 +43,16 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                 }
                 else
                 {
-                    formPayment.ResponseMessage = string.Format("{0} - {1}", vnpay.APIResponse.errors.code, vnpay.APIResponse.errors.message);
+                    if(vnpay.APIResponse.errors != null)
+                        formPayment.ResponseMessage = string.Format("{0} - {1}", vnpay.APIResponse.errors.code, vnpay.APIResponse.errors.message);
+                    else
+                        formPayment.ResponseMessage = string.Format("{0} - {1}", vnpay.APIResponse.code, vnpay.APIResponse.message);
                 }
             }
             catch (Exception e)
             {
                 result = false;
-                formPayment.ResponseMessage = e.Message;
+                formPayment.ResponseMessage = "Call service initializing transaction is failed.";
                 formPayment.Log.Error("InitializeTrans Failed", e);
             }
 
@@ -62,7 +65,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
             try
             {
-                result = payment.filterTransaction(formPayment.TransactionId, formPayment.VNPayTransRef);
+                result = payment.filterTransaction(formPayment.TransactionRef, formPayment.VNPayTransRef);
                 formPayment.Log.Info("Get result response: " + (payment as Payment).stringResponse);
                 if (result)
                 {

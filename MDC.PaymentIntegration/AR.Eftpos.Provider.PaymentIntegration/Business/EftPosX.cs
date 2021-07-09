@@ -72,7 +72,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
 
                             if (dialog.ShowDialog() == DialogResult.OK)
                             {
-                                if (dialog.ResponseCode == Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS)
+                                if (dialog.ResponseCode == Common.VNPAY_FILTER_RESPONSE_CODE_SUCCESS || dialog.IsManualUpdate)
                                     result = TransactionResultType.Success;
                                 else
                                     result = TransactionResultType.Failed;
@@ -82,7 +82,7 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                                 response = (TransactionResponseType)EftposHelper.QuickResponse(request, result, dialog.ResponseMessage);
                                 response.RequestMessageID = this.requestMessageID;
                                 //response.CardTypeRaw = dialog.Subscriber.ipnCardType;
-                                response.EftposTransactionReference = dialog.VNPayTransRef;
+                                response.EftposTransactionReference = dialog.TransactionRef;
                                 response.Amount = request.Amount;
                                 response.Attributes = new List<AttributeType>()
                             {
@@ -90,6 +90,11 @@ namespace AR.Eftpos.Provider.PaymentIntegration
                                 {
                                     Name = "ManualComplete",
                                     Value = dialog.IsManualUpdate.ToString()
+                                },
+                                new AttributeType()
+                                {
+                                    Name = "VnpayTransactionCode",
+                                    Value = dialog.VNPayTransRef
                                 }
                             }.ToArray();
                             }

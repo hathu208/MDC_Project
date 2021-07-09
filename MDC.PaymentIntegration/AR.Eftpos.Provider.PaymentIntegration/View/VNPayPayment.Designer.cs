@@ -38,7 +38,7 @@
             this.lblResponse = new System.Windows.Forms.Label();
             this.lblSubTitle = new System.Windows.Forms.Label();
             this.lblManualComplete = new System.Windows.Forms.Label();
-            this.lblTransactionId = new System.Windows.Forms.Label();
+            this.lblTransactionRef = new System.Windows.Forms.Label();
             this.lblAmount = new System.Windows.Forms.Label();
             this.lblTransRef = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -86,9 +86,9 @@
             this.lblHeader.Location = new System.Drawing.Point(22, 12);
             this.lblHeader.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(69, 20);
+            this.lblHeader.Size = new System.Drawing.Size(62, 20);
             this.lblHeader.TabIndex = 10;
-            this.lblHeader.Text = "QR Pay";
+            this.lblHeader.Text = "VNPay";
             // 
             // label5
             // 
@@ -121,18 +121,17 @@
             this.label2.Location = new System.Drawing.Point(22, 74);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 15);
+            this.label2.Size = new System.Drawing.Size(91, 15);
             this.label2.TabIndex = 15;
-            this.label2.Text = "Transaction ID";
+            this.label2.Text = "Transaction ref.";
             // 
             // lblResponse
             // 
-            this.lblResponse.AutoSize = true;
             this.lblResponse.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblResponse.Location = new System.Drawing.Point(152, 152);
             this.lblResponse.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblResponse.Name = "lblResponse";
-            this.lblResponse.Size = new System.Drawing.Size(63, 15);
+            this.lblResponse.Size = new System.Drawing.Size(326, 15);
             this.lblResponse.TabIndex = 16;
             this.lblResponse.Text = "Response";
             // 
@@ -142,9 +141,9 @@
             this.lblSubTitle.Location = new System.Drawing.Point(22, 36);
             this.lblSubTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSubTitle.Name = "lblSubTitle";
-            this.lblSubTitle.Size = new System.Drawing.Size(66, 13);
+            this.lblSubTitle.Size = new System.Drawing.Size(45, 13);
             this.lblSubTitle.TabIndex = 17;
-            this.lblSubTitle.Text = "AR Trans ID";
+            this.lblSubTitle.Text = "Sub title";
             // 
             // lblManualComplete
             // 
@@ -158,16 +157,16 @@
             this.lblManualComplete.Text = "lblManualComplete";
             this.lblManualComplete.Visible = false;
             // 
-            // lblTransactionId
+            // lblTransactionRef
             // 
-            this.lblTransactionId.AutoSize = true;
-            this.lblTransactionId.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTransactionId.Location = new System.Drawing.Point(152, 74);
-            this.lblTransactionId.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTransactionId.Name = "lblTransactionId";
-            this.lblTransactionId.Size = new System.Drawing.Size(77, 15);
-            this.lblTransactionId.TabIndex = 19;
-            this.lblTransactionId.Text = "0000000000";
+            this.lblTransactionRef.AutoSize = true;
+            this.lblTransactionRef.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTransactionRef.Location = new System.Drawing.Point(152, 74);
+            this.lblTransactionRef.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTransactionRef.Name = "lblTransactionRef";
+            this.lblTransactionRef.Size = new System.Drawing.Size(77, 15);
+            this.lblTransactionRef.TabIndex = 19;
+            this.lblTransactionRef.Text = "0000000000";
             // 
             // lblAmount
             // 
@@ -199,7 +198,7 @@
             this.ClientSize = new System.Drawing.Size(489, 274);
             this.Controls.Add(this.lblTransRef);
             this.Controls.Add(this.lblAmount);
-            this.Controls.Add(this.lblTransactionId);
+            this.Controls.Add(this.lblTransactionRef);
             this.Controls.Add(this.lblManualComplete);
             this.Controls.Add(this.lblSubTitle);
             this.Controls.Add(this.lblResponse);
@@ -230,7 +229,7 @@
         private System.Windows.Forms.Label lblResponse;
         private System.Windows.Forms.Label lblSubTitle;
         private System.Windows.Forms.Label lblManualComplete;
-        private System.Windows.Forms.Label lblTransactionId;
+        private System.Windows.Forms.Label lblTransactionRef;
         private System.Windows.Forms.Label lblAmount;
         private System.Windows.Forms.Label lblTransRef;
     }
